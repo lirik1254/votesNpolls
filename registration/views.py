@@ -59,9 +59,25 @@ def registration(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Вы успешно зарегистрировались!')
-            return redirect('authorisation')
+            login = form.cleaned_data['login']
+            mail = form.cleaned_data['mail']
+
+            try:
+                user = User.objects.get(mail=mail)
+                messages.error(request, 'Пользователь с такой почтой уже существует!')
+            except User.DoesNotExist:
+                pass
+
+            try:
+                user = User.objects.get(login=login)
+                messages.error(request, 'Пользователь с таким логином уже существует!')
+            except User.DoesNotExist:
+                pass
+
+            if not messages.get_messages(request):
+                form.save()
+                messages.success(request, 'Вы успешно зарегистрировались!')
+                return redirect('authorisation')
         else:
             messages.error(request, 'Пароли не совпадают!')
     else:
