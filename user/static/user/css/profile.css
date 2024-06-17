@@ -1,0 +1,28 @@
+.right {
+    text-align: right;
+    margin-right: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 20px 40px; /* Больший отступ внутри кнопки */
+    font-size: 20px; /* Увеличенный размер текста */
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 10px; /* Более заметное скругление углов */
+    margin-top: 20px; /* Отступ сверху между кнопками */
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

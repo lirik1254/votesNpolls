@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "user/css/profile.css" %}">
+</head>
+<body>
+    <img src="{% static "user/img/icon.png"%}" width="260" height="100px" class = "logo">
+    <button class="btn btn-warning">Создать опрос</button>
+    <a href="{%  url 'voting' %}"><button class="btn btn-warning">Создать голосование</button></a><br>
+<div class = "right">
+    <h1>Почта</h1>
+    <h2 class = "user_mail">{{ user.mail }}</h2><br>
+    <h1>Логин</h1>
+    <h2 class = "user_login">{{ user.login }}</h2>
+    <button class="btn btn-warning">Мои опросы</button><br>
+    <a href="{% url 'getUserVotingChoice' %}"><button class="btn btn-warning">Мои голосования</button></a>
+
+</div>
+
+</body>
+</html>

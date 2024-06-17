@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'registration/css/registration.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Регистрация</h2>
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class = "message1">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.mail.label_tag }}<br>
+                {{ form.mail }}<br><br>
+            </div>
+            <div class="form-group">
+                {{ form.login.label_tag }}<br>
+                {{ form.login }}<br><br>
+            </div>
+            <div class="form-group">
+                {{ form.password1.label_tag }}<br>
+                {{ form.password1 }}<br><br>
+            </div>
+            <div class="form-group">
+                {{ form.password2.label_tag }}<br>
+                {{ form.password2 }}<br><br>
+            </div>
+            <button type="submit" class="register-btn">Зарегистрироваться</button>
+        </form>
+    </div>
+</body>
+</html>
