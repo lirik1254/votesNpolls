@@ -1,24 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Голосования пользователя</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f7f7f7;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .poll {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        .poll h2 {
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .poll p {
+            font-size: 16px;
+            color: #777;
+        }
+        .no-polls {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-<h1>Polls created by {{ user.login }}</h1>
-{% for poll in user_polls %}
-        <div>
-            <h2>{{ poll.title }}</h2>
-            <p>{{ poll.description }}</p>
-            <ul>
-                {% for choice in poll.choices.all %}
-                    <li>{{ choice.text }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endfor %}
+<div class="container">
+    <h1>Голосования пользователя {{ user.login }}</h1>
+    {% if user_polls %}
+        {% for poll in user_polls reversed %}
+            <div class="poll">
+                <a href="#"><h2>{{ poll.title }}</h2></a>
+                <p>{{ poll.description }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-polls">У пользователя нет созданных голосований.</p>
+    {% endif %}
+</div>
 </body>
 </html>

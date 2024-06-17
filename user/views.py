@@ -11,7 +11,7 @@ def profile(request):
 
 
 def voting(request):
-    ChoiceFormSet = modelformset_factory(Choice, form=ChoiceForm, extra=3)
+    ChoiceFormSet = modelformset_factory(Choice, form=ChoiceForm, extra=4)
     if request.method == 'POST':
         poll_form = PollForm(request.POST)
         formset = ChoiceFormSet(request.POST, queryset=Choice.objects.none())
@@ -25,7 +25,7 @@ def voting(request):
                 if form:
                     choice = form['text']
                     Choice(poll=poll, text=choice).save()
-            return redirect('profile')
+            return render(request, 'user/profile.html', {'user': user})
     else:
         poll_form = PollForm()
         formset = ChoiceFormSet(queryset=Choice.objects.none())
@@ -57,6 +57,8 @@ def getUserVotingChoices(request):
         return redirect('login')  # Перенаправление на страницу входа или другую страницу
 
 
+def empty(request):
+    return render(request, "user/empty_page.html")
 # def voting(request):
 #     ChoiceFormSet = inlineformset_factory(Poll, Choice, form=ChoiceForm, extra=1, can_delete=True)
 #
