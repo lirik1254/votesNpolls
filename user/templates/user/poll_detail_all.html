@@ -22,7 +22,7 @@
 <div class="container">
     <h1 class="text-center">{{ poll.title }}</h1>
     <p class="text-center text-muted">{{ poll.description }}</p>
-    <form method="post" action="{% url 'vote' poll.id %}">
+    <form method="post" action="{% url 'vote_all' poll.id %}">
         {% csrf_token %}
         <div class="list-group">
             {% for choice in poll.choices.all %}

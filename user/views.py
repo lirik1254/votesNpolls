@@ -146,8 +146,7 @@ def allvotesreg(request):
 
 def poll_detail_all(request, poll_id):
     poll = get_object_or_404(Poll, id=poll_id)
-    # user_has_voted = request.session.get(f'has_voted_{poll_id}', False)
-    user_has_voted = False
+    user_has_voted = request.session.get(f'has_voted_{poll_id}', False)
     return render(request, 'user/poll_detail_all.html', {'poll': poll, 'user_has_voted': user_has_voted})
 
 
@@ -160,5 +159,5 @@ def vote_all(request, poll_id):
             selected_choice.votes += 1
             selected_choice.save()
             request.session[f'has_voted_{poll_id}'] = True
-            return redirect('poll_detail', poll_id=poll.id)
+            return redirect('poll_detail_all', poll_id=poll.id)
     return render(request, 'user/poll_detail_all.html', {'poll': poll, 'error_message': 'Выберите вариант ответа'})
