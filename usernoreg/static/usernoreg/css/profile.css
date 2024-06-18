@@ -1,0 +1,41 @@
+.custom-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 50px;
+            padding: 0; /* Убираем отступы */
+        }
+        .btn-huge {
+            font-size: 36px;
+            padding: 20px 40px;
+            margin-top: 20px; /* Отступ сверху для кнопки */
+        }
+        .btn-large {
+            width: 300px;
+            height: 180px;
+            font-size: 24px;
+            background-color: rgba(128, 128, 128, 0.5); /* Прозрачно-серая кнопка */
+            border: 2px solid rgba(128, 128, 128, 0.7); /* Полупрозрачная граница */
+            color: white;
+            transition: background-color 0.3s, border-color 0.3s; /* Плавный переход при наведении */
+        }
+        .btn-large:hover {
+            background-color: rgba(128, 128, 128, 0.8); /* Меняется фон при наведении */
+            border-color: rgba(128, 128, 128, 1); /* Меняется цвет границы при наведении */
+        }
+        .image-container img {
+            width: 260px;
+            height: 100px;
+            display: block;
+            margin-bottom: 20px; /* Отступ снизу для изображения */
+        }
+        .right-align {
+            text-align: right;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+
+

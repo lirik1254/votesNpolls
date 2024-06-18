@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Голосования пользователя</title>
+    <title>{{ poll.title }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,7 +27,6 @@
             text-align: center;
         }
         .poll {
-            margin-bottom: 30px;
             padding: 20px;
             background-color: #f0f0f0;
             border-radius: 8px;
@@ -41,27 +40,14 @@
             font-size: 16px;
             color: #777;
         }
-        .no-polls {
-            text-align: center;
-            font-size: 18px;
-            color: #888;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Голосования пользователя {{ user.login }}</h1>
-    {% if user_polls %}
-        {% for poll in user_polls reversed %}
-            <div class="poll">
-                <a href="#"><h2>{{ poll.title }}</h2></a>
-                <p>{{ poll.description }}</p>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p class="no-polls">У вас нет созданных голосований.</p>
-    {% endif %}
+    <div class="poll">
+        <h1>{{ poll.title }}</h1>
+        <p>{{ poll.description }}</p>
+    </div>
 </div>
 </body>
 </html>
