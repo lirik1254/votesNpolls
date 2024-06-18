@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Все голосования</title>
     <style>
         body {
@@ -62,6 +63,7 @@
     {% else %}
         <p class="no-polls">Голосования не найдены.</p>
     {% endif %}
+         <a href="{% url 'profile_noreg' %}" class="btn btn-info">На главную</a>
 </div>
 </body>
 </html>

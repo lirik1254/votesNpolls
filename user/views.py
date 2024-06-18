@@ -1,9 +1,10 @@
 from django.forms import inlineformset_factory, modelformset_factory
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from registration.models import User
 from .models import Poll, Choice
 from .forms import *
+from django.db.models import Sum
 
 
 def profile(request):
@@ -89,3 +90,24 @@ def empty(request):
 #         'choice_formset': choice_formset,
 #     }
 #     return render(request, 'user/create.html', context)
+
+def poll_detail_reg(request, poll_id):
+    poll = Poll.objects.get(id=poll_id)
+    choices = poll.choices.all()
+    total_votes = poll.choices.aggregate(total_votes=Sum('votes'))['total_votes'] or 0
+
+    # Пример определения функции choice_percentage
+    def choice_percentage(votes, total_votes):
+        if total_votes > 0:
+            return (votes / total_votes) * 100
+        else:
+            return 0
+
+    context = {
+        'poll': poll,
+        'choices': choices,
+        'total_votes': total_votes,
+        'choice_percentage': choice_percentage,  # Передача функции в контекст
+    }
+
+    return render(request, 'user/poll_detail_reg.html', context)

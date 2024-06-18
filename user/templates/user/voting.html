@@ -55,7 +55,7 @@
     {% if user_polls %}
         {% for poll in user_polls reversed %}
             <div class="poll">
-                <a href="#"><h2>{{ poll.title }}</h2></a>
+                <a href="{% url "poll_detail_reg" poll.id %}"><h2>{{ poll.title }}</h2></a>
                 <p>{{ poll.description }}</p>
             </div>
         {% endfor %}

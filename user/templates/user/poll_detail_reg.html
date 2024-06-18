@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Детали голосования</title>
+    {% load static %}
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .container {
@@ -16,40 +16,42 @@
         .choice label {
             margin-left: 10px;
         }
+        .percentage {
+            font-size: 14px;
+            color: #888;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1 class="text-center">{{ poll.title }}</h1>
     <p class="text-center text-muted">{{ poll.description }}</p>
-    <form method="post" action="{% url 'vote' poll.id %}">
-        {% csrf_token %}
-        <div class="list-group">
-            {% for choice in poll.choices.all %}
-                <div class="list-group-item choice">
+    <div class="list-group">
+        {% for choice in poll.choices.all %}
+            <div class="list-group-item choice">
+                <div class="d-flex justify-content-between align-items-center">
                     <div class="custom-control custom-radio">
                         <input type="radio" id="choice{{ forloop.counter }}" name="choice" value="{{ choice.id }}"
                                class="custom-control-input" {% if user_has_voted %}disabled{% endif %}>
                         <label class="custom-control-label" for="choice{{ forloop.counter }}">
                             {{ choice.text }}
-                            {% if user_has_voted %}
-                                <span class="badge badge-primary badge-pill">{{ choice.votes }} голосов</span>
-                            {% endif %}
                         </label>
                     </div>
+                    <span class="badge badge-primary badge-pill">{{ choice.votes }} голосов</span>
                 </div>
-            {% endfor %}
-        </div>
-        {% if not user_has_voted %}
-            <div class="text-center mt-4">
-                <button type="submit" class="btn btn-primary">Голосовать</button>
+                <div class="mt-2">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ choice.votes_percentage }}%;" aria-valuenow="{{ choice.votes_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                            <span class="sr-only">{{ choice.votes_percentage }}%</span>
+                        </div>
+                    </div>
+                    <div class="percentage">{{ choice.votes_percentage|floatformat:2 }}%</div>
+                </div>
             </div>
-        {% endif %}
-    </form>
-    <div class="text-center mt-3">
-        <a href="{% url 'votes_noreg' %}" class="btn btn-secondary">Вернуться ко всем голосованиям</a><!-- Добавленная кнопка "На главную" -->
+        {% endfor %}
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

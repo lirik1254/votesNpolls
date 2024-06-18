@@ -11,6 +11,7 @@
     <button class="btn btn-warning">Создать опрос</button>
     <a href="{%  url 'voting' %}"><button class="btn btn-warning">Создать голосование</button></a><br>
 <div class = "right">
+    <a href="{% url "profile_noreg" %}"><button class = "btn btn-danger">Выйти</button></a>
     <h1>Почта</h1>
     <h2 class = "user_mail">{{ user.mail }}</h2><br>
     <h1>Логин</h1>

@@ -1,7 +1,8 @@
 .right {
-    text-align: right;
-    margin-right: 30px;
-}
+            text-align: right;
+            margin-right: 30px;
+            margin-top: 20px;
+        }
 
 .btn {
     display: inline-block;
@@ -25,4 +26,5 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 50px; /* Отступ сверху для логотипа */
 }
