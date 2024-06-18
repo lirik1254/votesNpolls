@@ -17,7 +17,7 @@ def profile(request):
 
 
 def voting(request):
-    ChoiceFormSet = modelformset_factory(Choice, form=ChoiceForm, extra=4)
+    ChoiceFormSet = modelformset_factory(Choice, form=ChoiceForm, extra=1, can_delete=True)
     if request.method == 'POST':
         poll_form = PollForm(request.POST)
         formset = ChoiceFormSet(request.POST, queryset=Choice.objects.none())
@@ -29,9 +29,10 @@ def voting(request):
             poll.save()
             for form in formset.cleaned_data:
                 if form:
-                    choice = form['text']
-                    Choice(poll=poll, text=choice).save()
-            return render(request, 'user/profile.html', {'user': user})
+                    text = form.get('text')
+                    if text:
+                        Choice(poll=poll, text=text).save()
+            return redirect('profile')  # Замените на соответствующий URL
     else:
         poll_form = PollForm()
         formset = ChoiceFormSet(queryset=Choice.objects.none())
@@ -116,3 +117,48 @@ def poll_detail_reg(request, poll_id):
     }
 
     return render(request, 'user/poll_detail_reg.html', context)
+
+def delete_poll(request, poll_id):
+    user_id = request.session.get('user_id')
+    if user_id:
+        try:
+            poll = get_object_or_404(Poll, id=poll_id, creator_id=user_id)
+            poll.delete()
+            return redirect('getUserVotingChoice')  # Перенаправить на страницу со списком голосований пользователя
+        except Poll.DoesNotExist:
+            return HttpResponse('Ошибка: Голосование не найдено.')
+    else:
+        return redirect('login')
+
+def allvotesreg(request):
+    try:
+        # Получаем все голосования всех пользователей
+        all_polls = Poll.objects.all()
+
+        context = {
+            'all_polls': all_polls
+        }
+
+        return render(request, 'user/allvotesreg.html', context)
+
+    except Poll.DoesNotExist:
+        return render(request, 'user/allvotesreg.html', {'error_message': 'Пока нет ни одного голосования'})
+
+def poll_detail_all(request, poll_id):
+    poll = get_object_or_404(Poll, id=poll_id)
+    # user_has_voted = request.session.get(f'has_voted_{poll_id}', False)
+    user_has_voted = False
+    return render(request, 'user/poll_detail_all.html', {'poll': poll, 'user_has_voted': user_has_voted})
+
+
+def vote_all(request, poll_id):
+    poll = get_object_or_404(Poll, id=poll_id)
+    if request.method == 'POST':
+        choice_id = request.POST.get('choice')
+        if choice_id:
+            selected_choice = get_object_or_404(Choice, id=choice_id, poll=poll)
+            selected_choice.votes += 1
+            selected_choice.save()
+            request.session[f'has_voted_{poll_id}'] = True
+            return redirect('poll_detail', poll_id=poll.id)
+    return render(request, 'user/poll_detail_all.html', {'poll': poll, 'error_message': 'Выберите вариант ответа'})

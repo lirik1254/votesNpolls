@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Голосования пользователя</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Все голосования</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,33 +48,22 @@
             color: #888;
             margin-top: 20px;
         }
-        .poll-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Голосования пользователя {{ user.login }}</h1>
-    {% if user_polls %}
-        {% for poll in user_polls reversed %}
+    <h1>Все голосования</h1>
+    {% if all_polls %}
+        {% for poll in all_polls reversed %}
             <div class="poll">
-                <div class="poll-buttons">
-                    <a href="{% url "poll_detail_reg" poll.id %}"><h2>{{ poll.title }}</h2></a>
-                    <form method="post" action="{% url 'delete_poll' poll.id %}" style="margin: 0;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
-                    </form>
-                </div>
+                <a href="{% url 'poll_detail_all' poll.id %}"><h2>{{ poll.title }}</h2></a>
                 <p>{{ poll.description }}</p>
             </div>
         {% endfor %}
     {% else %}
-        <p class="no-polls">У вас нет созданных голосований.</p>
+        <p class="no-polls">Голосования не найдены.</p>
     {% endif %}
-    <a href="{% url 'profile' %}" class="btn btn-secondary">Вернуться в профиль</a>
+         <a href="{% url 'profile' %}" class="btn btn-secondary">На главную</a>
 </div>
 </body>
 </html>

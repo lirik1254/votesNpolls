@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали голосования</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        .choice {
+            margin-bottom: 15px;
+        }
+        .choice label {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">{{ poll.title }}</h1>
+    <p class="text-center text-muted">{{ poll.description }}</p>
+    <form method="post" action="{% url 'vote' poll.id %}">
+        {% csrf_token %}
+        <div class="list-group">
+            {% for choice in poll.choices.all %}
+                <div class="list-group-item choice">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="choice{{ forloop.counter }}" name="choice" value="{{ choice.id }}"
+                               class="custom-control-input" {% if user_has_voted %}disabled{% endif %}>
+                        <label class="custom-control-label" for="choice{{ forloop.counter }}">
+                            {{ choice.text }}
+                            {% if user_has_voted %}
+                                <span class="badge badge-primary badge-pill">{{ choice.votes }} голосов ({{ choice.votes_percentage|floatformat:"1" }}%)</span>
+                            {% endif %}
+                        </label>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% if not user_has_voted %}
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Голосовать</button>
+            </div>
+        {% endif %}
+    </form>
+    <div class="text-center mt-3">
+        <a href="{% url 'allvotesreg' %}" class="btn btn-secondary">Вернуться ко всем голосованиям</a><!-- Добавленная кнопка "На главную" -->
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

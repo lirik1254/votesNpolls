@@ -3,6 +3,7 @@
 <head>
     <title>Создать голосование</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
     <div class="container my-4">
@@ -19,15 +20,42 @@
             </div>
             <h4>Варианты ответа</h4>
             {{ formset.management_form }}
-            {% for form in formset %}
-                <div class="form-group">
-                    {{ form.text }}
-                </div>
-            {% endfor %}
+            <div id="choices-formset">
+                {% for form in formset %}
+                    <div class="form-group choice-form">
+                        {{ form.text }}
+                        <button type="button" class="btn btn-danger remove-choice">Удалить</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-success" id="add-choice">Добавить вариант</button>
             <button type="submit" class="btn btn-primary">Создать голосование</button>
         </form>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let form_idx = {{ formset.total_form_count }};
+            $('#add-choice').click(function() {
+                let newForm = $('#choices-formset .choice-form:first').clone();
+                newForm.find('input').each(function() {
+                    let name = $(this).attr('name').replace('-0-', '-' + form_idx + '-');
+                    let id = 'id_' + name;
+                    $(this).attr({'name': name, 'id': id}).val('');
+                });
+                newForm.appendTo('#choices-formset');
+                form_idx++;
+                $('#id_form-TOTAL_FORMS').val(form_idx);
+            });
+
+            $(document).on('click', '.remove-choice', function() {
+                if ($('#choices-formset .choice-form').length > 1) {
+                    $(this).closest('.choice-form').remove();
+                    form_idx--;
+                    $('#id_form-TOTAL_FORMS').val(form_idx);
+                }
+            });
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
