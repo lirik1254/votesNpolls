@@ -8,7 +8,12 @@ from django.db.models import Sum
 
 
 def profile(request):
-    return render(request, "user/profile.html")
+    user_id = request.session.get('user_id')
+    user = User.objects.get(id=user_id)
+    context = {
+        "user": user
+    }
+    return render(request, "user/profile.html", context)
 
 
 def voting(request):

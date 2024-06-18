@@ -33,7 +33,7 @@
                         <label class="custom-control-label" for="choice{{ forloop.counter }}">
                             {{ choice.text }}
                             {% if user_has_voted %}
-                                <span class="badge badge-primary badge-pill">{{ choice.votes }} голосов</span>
+                                <span class="badge badge-primary badge-pill">{{ choice.votes }} голосов ({{ choice.votes_percentage|floatformat:"1" }}%)</span>
                             {% endif %}
                         </label>
                     </div>
